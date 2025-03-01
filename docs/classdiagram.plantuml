@@ -1,0 +1,35 @@
+@startuml ClassDiagram
+
+class SortingStrategy {
+    #long long count_compare
+    #long long count_assign
+    +{abstract} ~SortingStrategy()
+    #{abstract} void sortImp(int arr[], int n) = 0;
+    +void sort(int arr[], int n)
+    +{abstract} string getName() const = 0
+    +long long getCountCompare()
+    +long long getCountAssign()
+}
+
+class InsertionSort {
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
+}
+
+class QuickSort{
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
+}
+
+class BinaryInserionSort {
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
+}
+
+' Relations beetween classes
+SortingStrategy <|-- InsertionSort
+SortingStrategy <|-- QuickSort
+SortingStrategy <|-- BinaryInserionSort
+
+
+@enduml
