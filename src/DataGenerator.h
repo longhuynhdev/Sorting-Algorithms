@@ -1,13 +1,9 @@
 #ifndef DATA_GENERATOR_H
 #define DATA_GENERATOR_H
 
-#include <iostream>
 #include <fstream>
 #include <cmath>
 #include <time.h>
-
-using namespace std;
-
 
 template <class T>
 void HoanVi(T &a, T &b);
