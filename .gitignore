@@ -32,3 +32,5 @@
 *.app
 src/output
 .DS_Store
+.vscode/c_cpp_properties.json
+.vscode/settings.json
