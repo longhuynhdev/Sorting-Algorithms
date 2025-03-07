@@ -2,13 +2,11 @@
 
 class SortingStrategy {
     #long long count_compare
-    #long long count_assign
     +{abstract} ~SortingStrategy()
     #{abstract} void sortImp(int arr[], int n) = 0;
     +void sort(int arr[], int n)
     +{abstract} string getName() const = 0
     +long long getCountCompare()
-    +long long getCountAssign()
 }
 
 class InsertionSort {
@@ -19,6 +17,8 @@ class InsertionSort {
 class QuickSort{
     #{method} sortImp(int arr[], int n)
     +{method} getName()
+    -int partition(int arr[], int low, int high);
+    -void quickSort(int arr[], int low, int high);
 }
 
 class BinaryInserionSort {
@@ -26,10 +26,33 @@ class BinaryInserionSort {
     +{method} getName()
 }
 
+class BubbleSort{
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
+
+}
+
+class SelectionSort {
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
+
+}
+
+class MergeSort {
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
+    -void merge(int arr[], int p, int q, int r)
+    -void mergeSort(int arr[], int l, int r)
+}
+
 ' Relations beetween classes
 SortingStrategy <|-- InsertionSort
 SortingStrategy <|-- QuickSort
 SortingStrategy <|-- BinaryInserionSort
+SortingStrategy <|-- BubbleSort
+SortingStrategy <|-- SelectionSort
+SortingStrategy <|-- MergeSort
+
 
 
 @enduml

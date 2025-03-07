@@ -30,6 +30,7 @@ void handleArguments(int argc, char *argv[])
       {
         std::string inputFileName = argv[3];
         std::string outputFileName = "output.txt";
+        
       }
       // Command 3 Ex: a.exe -a binary-insertion-sort 70000 -comp
       else if (atoi(argv[3]) > 0)
