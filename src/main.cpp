@@ -1,11 +1,11 @@
 #include "DataGenerator.h"
 #include "SortingAlgorithm.h"
 #include "SortingStrategy.h"
+#include <chrono>
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <chrono>
 
 using namespace std;
 
@@ -111,11 +111,17 @@ void compareAlgorithms(SortingStrategy *algo1, SortingStrategy *algo2,
 
 void printComparisonMode(string algoName1, long long time1, long long comp1,
                          string algoName2, long long time2, long long comp2,
-                         string fileName, int n) {
+                         string fileName = "", int n = 0,
+                         string inputOrder = "") {
   cout << "COMPARE MODE" << endl;
   cout << "Algorithm: " << algoName1 << " | " << algoName2 << endl;
-  cout << "Input file: " << fileName << endl;
-  cout << "Input size: " << n << endl;
+  if (!fileName.empty()) {
+    cout << "Input file: " << fileName << endl;
+    cout << "Input size: " << n << endl;
+  } else if (!inputOrder.empty()) {
+    cout << "Input size: " << n << endl;
+    cout << "Input order: " << inputOrder << endl;
+  }
   cout << "-------------------------------------" << endl;
   cout << "Running time: " << time1 << "(ms)"
        << " | " << time2 << "(ms)" << endl;
@@ -146,7 +152,7 @@ SortingStrategy *createSortingAlgorithm(const string &name) {
   cout << "Unknown sorting algorithm: " << name << endl;
   return nullptr;
 }
-
+// [Algorithm 1] [Algorithm 2] [Given input]
 void handleCommand4(string algo1, string algo2, string fileName) {
   SortingStrategy *sorter1 = createSortingAlgorithm(algo1);
   SortingStrategy *sorter2 = createSortingAlgorithm(algo2);
@@ -170,6 +176,53 @@ void handleCommand4(string algo1, string algo2, string fileName) {
                         sorter2->getName(), time2, sorter2->getCountCompare(),
                         fileName, n);
   }
+
+  delete[] arr;
+  delete sorter1;
+  delete sorter2;
+}
+
+// [Algorithm 1] [Algorithm 2] [Input size] [Input order]
+void handleCommand5(string algo1, string algo2, int inputSize,
+                    string inputOrder) {
+  SortingStrategy *sorter1 = createSortingAlgorithm(algo1);
+  SortingStrategy *sorter2 = createSortingAlgorithm(algo2);
+
+  if (!sorter1 || !sorter2) {
+    cout << "Error: Invalid algorithm name(s)" << endl;
+    delete sorter1;
+    delete sorter2;
+    return;
+  }
+
+  if (inputSize <= 0 || inputSize > 1000000) {
+    cout << "Error: Input size must be between 1 and 1,000,000" << endl;
+    delete sorter1;
+    delete sorter2;
+    return;
+  }
+
+  int *arr = generateArray(inputSize, inputOrder);
+
+  if (arr == nullptr) {
+    delete sorter1;
+    delete sorter2;
+    return;
+  }
+
+  long long time1 = 0;
+  long long time2 = 0;
+  compareAlgorithms(sorter1, sorter2, arr, inputSize, time1, time2);
+
+  printComparisonMode(sorter1->getName(), time1, sorter1->getCountCompare(),
+                      sorter2->getName(), time2, sorter2->getCountCompare(), "",
+                      inputSize, inputOrder);
+  string fileName = "input.txt";
+  writeArraytoFile(fileName, arr, inputSize);
+
+  delete[] arr;
+  delete sorter1;
+  delete sorter2;
 }
 
 void handleArguments(int argc, char *argv[]) {
@@ -201,7 +254,8 @@ void handleArguments(int argc, char *argv[]) {
       handleCommand4(argv[2], argv[3], argv[4]);
     } else if (argc == 6) {
       // Command 5: Ex: a.exe -c quick-sort merge-sort 100000 -nsorted
-      cout << "Command 5" << endl;
+      int inputSize = atoi(argv[4]);
+      handleCommand5(argv[2], argv[3], inputSize, argv[5]);
     }
   }
 }

@@ -15,13 +15,14 @@ class InsertionSort {
 }
 
 class QuickSort{
-    #{method} sortImp(int arr[], int n)
-    +{method} getName()
     -int partition(int arr[], int low, int high);
     -void quickSort(int arr[], int low, int high);
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
 }
 
 class BinaryInserionSort {
+    -int binarySearch(int arr[], int low, int high, int item)
     #{method} sortImp(int arr[], int n)
     +{method} getName()
 }
@@ -39,10 +40,10 @@ class SelectionSort {
 }
 
 class MergeSort {
-    #{method} sortImp(int arr[], int n)
-    +{method} getName()
     -void merge(int arr[], int p, int q, int r)
     -void mergeSort(int arr[], int l, int r)
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
 }
 
 ' Relations beetween classes
