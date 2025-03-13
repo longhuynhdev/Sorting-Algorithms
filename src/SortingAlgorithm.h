@@ -23,7 +23,10 @@ public:
   std::string getName() const override;
 };
 
-class BinaryInserionSort : public SortingStrategy {
+class BinaryInsertionSort : public SortingStrategy {
+private:
+  int binarySearch(int arr[], int low, int high, int item);
+
 protected:
   void sortImp(int arr[], int n) override;
 
