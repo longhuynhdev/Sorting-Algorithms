@@ -63,13 +63,13 @@ int *generateArray(int n, string pattern) {
   int *arr = new int[n];
 
   if (pattern == "-rand") {
-    GenerateRandomData(arr, n);
+    GenerateData(arr, n, 0);
   } else if (pattern == "-sorted") {
-    GenerateSortedData(arr, n);
+    GenerateData(arr, n, 2);
   } else if (pattern == "-rev") {
-    GenerateReverseData(arr, n);
+    GenerateData(arr, n, 3);
   } else if (pattern == "-nsorted") {
-    GenerateNearlySortedData(arr, n);
+    GenerateData(arr, n, 1);
   } else {
     cout << "Error: Unknown data pattern: " << pattern << endl;
     delete[] arr;
@@ -109,6 +109,17 @@ void compareAlgorithms(SortingStrategy *algo1, SortingStrategy *algo2,
   delete[] arr2;
 }
 
+void printOutputParameter(string parameter, long long count_compare, long long runtime) {
+  if (parameter == "-time") {
+    cout << "Running time: " << runtime << " (ms)" << endl;
+  } else if (parameter == "-comp") {
+    cout << "Comparisions: " << count_compare << endl;
+  } else if (parameter == "-both") {
+    cout << "Running time: " << runtime << " (ms)" << endl;
+    cout << "Comparisions: " << count_compare << endl;
+  }
+}
+
 void printComparisonMode(string algoName1, long long time1, long long comp1,
                          string algoName2, long long time2, long long comp2,
                          string fileName = "", int n = 0,
@@ -138,9 +149,11 @@ SortingStrategy *createSortingAlgorithm(const string &name) {
     return new BinaryInsertionSort();
   if (name == "bubble-sort")
     return new BubbleSort();
-  // if (name == "shaker-sort") return new ShakerSort();
+  if (name == "shaker-sort")
+    return new ShakerSort();
   // if (name == "shell-sort") return new ShellSort();
-  // if (name == "heap-sort") return new HeapSort();
+  if (name == "heap-sort")
+    return new HeapSort();
   if (name == "merge-sort")
     return new MergeSort();
   if (name == "quick-sort")
@@ -152,7 +165,85 @@ SortingStrategy *createSortingAlgorithm(const string &name) {
   cout << "Unknown sorting algorithm: " << name << endl;
   return nullptr;
 }
+
+string parameter2Order(string parameter) {
+  string order_name = "";
+  if (parameter == "-rand") {
+    order_name = "Randomize";
+  } else if (parameter == "-sorted") {
+    order_name = "Sorted";
+  } else if (parameter == "-nsorted") {
+    order_name = "Nearly Sorted";
+  } else if (parameter == "-rev") {
+    order_name = "Reversed";
+  } else {
+    cout << "Error: Invalid input order";
+  }
+
+  return order_name;
+}
+
+// Command 2
+void handleCommand2(string algo, int n, string input_order,
+                    string output_parameter = "") {
+  string filename_in = "input/input.txt";
+  string filename_out = "input/output.txt";
+  SortingStrategy *sort_method = createSortingAlgorithm(algo);
+  cout << "Algorithm: " << sort_method->getName() << endl;
+  cout << "Input size: " << n << endl;
+  cout << "Input order: " << parameter2Order(input_order) << endl;
+  cout << "-------------------------------------" << endl;
+  if (!sort_method) {
+    cout << "Error: Invalid algorithm name(s)" << endl;
+    delete sort_method;
+    return;
+  }
+
+  int *arr = generateArray(n, input_order);
+  writeArraytoFile(filename_in, arr, n);
+  long long runtime = runAlgorithm(sort_method, arr, n);
+  printOutputParameter(output_parameter, sort_method->getCountCompare(),
+                       runtime);
+
+  delete[] arr;
+  delete sort_method;
+}
+
+// Command 3
+void handleCommand3(string algo, int n, string output_parameter = "") {
+  string sort_types[4] = {"Randomize", "Nearly Sorted", "Sorted", "Reversed"};
+  string filename_out = "input/output.txt";
+  SortingStrategy *sort_method = createSortingAlgorithm(algo);
+  cout << "Algorithm: " << sort_method->getName() << endl;
+  cout << "Input size: " << n << endl << endl;
+
+  int *arr = new int[n];
+  for (int i = 0; i < 4; i++) {
+    string filename_in = "input/input_" + to_string(i + 1) + ".txt";
+    GenerateData(arr, n, i);
+    writeArraytoFile(filename_in, arr, n);
+    long long runtime = runAlgorithm(sort_method, arr, n);
+    cout << "Input order: " << sort_types[i] << endl;
+    cout << "-------------------------------------" << endl;
+    printOutputParameter(output_parameter, sort_method->getCountCompare(),
+                         runtime);
+    cout << endl;
+  }
+
+  if (!sort_method) {
+    cout << "Error: Invalid algorithm name(s)" << endl;
+    delete sort_method;
+    return;
+  }
+
+  delete[] arr;
+  delete sort_method;
+}
+
+// Command 4
+=======
 // [Algorithm 1] [Algorithm 2] [Given input]
+>>>>>>> main
 void handleCommand4(string algo1, string algo2, string fileName) {
   SortingStrategy *sorter1 = createSortingAlgorithm(algo1);
   SortingStrategy *sorter2 = createSortingAlgorithm(algo2);
@@ -231,20 +322,31 @@ void handleArguments(int argc, char *argv[]) {
   }
   // Mode -a Algorithm mode
   if (strcmp(argv[1], "-a") == 0) {
-    if (argc == 5) {
+    cout << "ALGORITHM MODE" << endl;
+    if (argc == 4) {
+      // Command 3 Ex: a.exe -a binary-insertion-sort 70000
+      if (atoi(argv[3]) > 0) {
+        handleCommand3(argv[2], atoi(argv[3]));
+      }
+    } else if (argc == 5) {
       // Command 1 Ex: a.exe -a radix-sort input.txt -both
       if (strstr(argv[3], ".txt") != NULL) {
         string inputFileName = argv[3];
         string outputFileName = "output.txt";
-
       }
       // Command 3 Ex: a.exe -a binary-insertion-sort 70000 -comp
-      else if (atoi(argv[3]) > 0) {
-        cout << "Command 3" << endl;
+      else if (atoi(argv[3]) > 0 &&
+               (string(argv[4]) == "-time" || string(argv[4]) == "-comp" ||
+                string(argv[4]) == "-both")) {
+        handleCommand3(argv[2], atoi(argv[3]), argv[4]);
+      }
+      // Command 2 Ex: a.exe -a selection-sort 50 -rand
+      else {
+        handleCommand2(argv[2], atoi(argv[3]), argv[4]);
       }
     } else if (argc == 6) {
       // Command 2 Ex: a.exe -a selection-sort 50 -rand -time
-      cout << "Command 2" << endl;
+      handleCommand2(argv[2], atoi(argv[3]), argv[4], argv[5]);
     }
   }
   // Mode -c Compare mode

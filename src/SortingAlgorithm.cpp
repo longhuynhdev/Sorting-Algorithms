@@ -1,4 +1,5 @@
 #include "SortingAlgorithm.h"
+#include <utility>
 
 void InsertionSort::sortImp(int arr[], int n) {
   for (int i = 1; i < n; i++) {
@@ -103,6 +104,65 @@ void MergeSort::sortImp(int arr[], int n) {
   // TODO: YOUR CODE HERE
 }
 
+// Heap sort
+void HeapSort::heapify(int arr[], int n, int i) {
+  int largest = i;
+  int left = 2 * i + 1;
+  int right = 2 * i + 2;
+
+  if (++count_compare && left < n && ++count_compare &&
+      arr[left] > arr[largest]) {
+    largest = left;
+  }
+
+  if (++count_compare && right < n && ++count_compare &&
+      arr[right] > arr[largest]) {
+    largest = right;
+  }
+
+  if (++count_compare && largest != i) {
+    std::swap(arr[i], arr[largest]);
+    heapify(arr, n, largest);
+  }
+}
+
+void HeapSort::sortImp(int arr[], int n) {
+  // Build heap
+  for (int i = n / 2 - 1; ++count_compare && i >= 0; i--) {
+    heapify(arr, n, i);
+  }
+
+  for (int i = n - 1; ++count_compare && i >= 0; i--) {
+    std::swap(arr[0], arr[i]);
+    heapify(arr, i, 0);
+  }
+}
+
+void ShakerSort::sortImp(int arr[], int n) {
+  int i;
+  int k = 0;
+  int left = 0;
+  int right = n - 1;
+
+  while (++count_compare && left < right) {
+    for (int i = left; ++count_compare && i < right; i++) {
+      if (++count_compare && arr[i] > arr[i + 1]) {
+        std::swap(arr[i], arr[i + 1]);
+        k = i;
+      }
+    }
+    right = k;
+
+    for (int i = right; ++count_compare && i > left; i--) {
+      if (++count_compare && arr[i] < arr[i - 1]) {
+        std::swap(arr[i], arr[i - 1]);
+        k = i;
+      }
+    }
+    left = k;
+  }
+}
+
 std::string SelectionSort::getName() const { return "Selection Sort"; }
 std::string InsertionSort::getName() const { return "Insertion Sort"; }
 std::string BinaryInsertionSort::getName() const {
@@ -111,3 +171,5 @@ std::string BinaryInsertionSort::getName() const {
 std::string QuickSort::getName() const { return "Quick Sort"; }
 std::string BubbleSort::getName() const { return "Bubble Sort"; }
 std::string MergeSort::getName() const { return "Merge Sort"; }
+std::string HeapSort::getName() const { return "Heap Sort"; }
+std::string ShakerSort::getName() const { return "Shaker Sort"; }
