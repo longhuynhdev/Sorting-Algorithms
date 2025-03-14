@@ -2,6 +2,7 @@
 #define SORTING_ALGORITHM_H_
 
 #include "SortingStrategy.h"
+#include <string>
 
 class InsertionSort : public SortingStrategy {
 protected:
@@ -58,4 +59,24 @@ public:
   std::string getName() const override;
 };
 
+// Heap sort
+class HeapSort : public SortingStrategy {
+private:
+  void heapify(int arr[], int n, int i);
+
+protected:
+  void sortImp(int arr[], int n) override;
+
+public:
+  std::string getName() const override;
+};
+
+// Shaker sort
+class ShakerSort : public SortingStrategy {
+protected:
+  void sortImp(int arr[], int n) override;
+
+public:
+  std::string getName() const override;
+};
 #endif // SORTING_ALGORITHM_H_
