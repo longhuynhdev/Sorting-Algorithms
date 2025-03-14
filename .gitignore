@@ -35,3 +35,4 @@ src/output
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 src/input.txt
+src/main

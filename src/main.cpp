@@ -241,9 +241,7 @@ void handleCommand3(string algo, int n, string output_parameter = "") {
 }
 
 // Command 4
-=======
 // [Algorithm 1] [Algorithm 2] [Given input]
->>>>>>> main
 void handleCommand4(string algo1, string algo2, string fileName) {
   SortingStrategy *sorter1 = createSortingAlgorithm(algo1);
   SortingStrategy *sorter2 = createSortingAlgorithm(algo2);
