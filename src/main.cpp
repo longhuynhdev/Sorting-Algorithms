@@ -165,7 +165,6 @@ SortingStrategy *createSortingAlgorithm(const string &name) {
   cout << "Unknown sorting algorithm: " << name << endl;
   return nullptr;
 }
-<<<<<<< HEAD
 
 string parameter2Order(string parameter) {
   string order_name = "";
@@ -237,6 +236,7 @@ void handleCommand3(string algo, int n, string output_parameter = "") {
     return;
   }
 
+  delete[] arr;
   delete sort_method;
 }
 
