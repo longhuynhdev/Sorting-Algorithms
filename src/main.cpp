@@ -158,8 +158,10 @@ SortingStrategy *createSortingAlgorithm(const string &name) {
     return new MergeSort();
   if (name == "quick-sort")
     return new QuickSort();
-  // if (name == "counting-sort") return new CountingSort();
-  // if (name == "radix-sort") return new RadixSort();
+  if (name == "counting-sort") 
+    return new CountingSort();
+  if (name == "radix-sort") 
+    return new RadixSort();
   // if (name == "flash-sort") return new FlashSort();
 
   cout << "Unknown sorting algorithm: " << name << endl;
@@ -181,6 +183,29 @@ string parameter2Order(string parameter) {
   }
 
   return order_name;
+}
+
+// Command 1
+void handleCommand1(string algo, string given_input, string output_parameter = ""){
+  string filename_out = "input/output.txt";
+  SortingStrategy *sort_method = createSortingAlgorithm(algo);
+  cout << "Algorithm: " << sort_method->getName() << endl;
+  cout << "Input file: " << given_input << endl;
+  cout << "Input size: ";
+  cout << "-------------------------------------" << endl;
+  if(!sort_method) {
+    cout << "Error: Invalid algorithm name(s)" << endl;
+    delete sort_method;
+    return;
+  }
+  int n;
+  int *arr = readArrayFromFile(given_input, n);
+  long long runtime = runAlgorithm(sort_method, arr, n);
+  
+  printOutputParameter(output_parameter, sort_method->getCountCompare(), runtime);
+  writeArraytoFile(filename_out, arr, n);
+  delete[] arr;
+  delete sort_method;
 }
 
 // Command 2
@@ -331,6 +356,7 @@ void handleArguments(int argc, char *argv[]) {
       if (strstr(argv[3], ".txt") != NULL) {
         string inputFileName = argv[3];
         string outputFileName = "output.txt";
+        handleCommand1(argv[2], argv[3], argv[4]);
       }
       // Command 3 Ex: a.exe -a binary-insertion-sort 70000 -comp
       else if (atoi(argv[3]) > 0 &&
