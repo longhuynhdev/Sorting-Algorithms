@@ -189,15 +189,18 @@ string parameter2Order(string parameter) {
 void handleCommand1(string algo, string given_input, string output_parameter = ""){
   string filename_out = "input/output.txt";
   SortingStrategy *sort_method = createSortingAlgorithm(algo);
-  cout << "Algorithm: " << sort_method->getName() << endl;
-  cout << "Input file: " << given_input << endl;
-  cout << "Input size: ";
-  cout << "-------------------------------------" << endl;
+
   if(!sort_method) {
     cout << "Error: Invalid algorithm name(s)" << endl;
     delete sort_method;
     return;
   }
+  
+  cout << "Algorithm: " << sort_method->getName() << endl;
+  cout << "Input file: " << given_input << endl;
+  cout << "Input size: ";
+  cout << "-------------------------------------" << endl;
+
   int n;
   int *arr = readArrayFromFile(given_input, n);
   long long runtime = runAlgorithm(sort_method, arr, n);
@@ -354,8 +357,6 @@ void handleArguments(int argc, char *argv[]) {
     } else if (argc == 5) {
       // Command 1 Ex: a.exe -a radix-sort input.txt -both
       if (strstr(argv[3], ".txt") != NULL) {
-        string inputFileName = argv[3];
-        string outputFileName = "output.txt";
         handleCommand1(argv[2], argv[3], argv[4]);
       }
       // Command 3 Ex: a.exe -a binary-insertion-sort 70000 -comp
