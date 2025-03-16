@@ -79,4 +79,25 @@ protected:
 public:
   std::string getName() const override;
 };
+
+// Counting sort
+class CountingSort : public SortingStrategy {
+protected:
+  void sortImp(int arr[], int n) override;
+
+public:
+  std::string getName() const override;
+};
+
+// Radix sort
+class RadixSort : public SortingStrategy {
+protected:
+  void sortImp(int arr[], int n) override;
+  
+public:
+  std::string getName() const override;
+};
+  
+
+
 #endif // SORTING_ALGORITHM_H_
