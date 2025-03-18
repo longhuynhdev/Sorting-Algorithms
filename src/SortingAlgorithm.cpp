@@ -1,5 +1,6 @@
 #include "SortingAlgorithm.h"
 #include <utility>
+#include <bits/stdc++.h>
 
 void InsertionSort::sortImp(int arr[], int n) {
   for (int i = 1; i < n; i++) {
@@ -93,11 +94,36 @@ void QuickSort::quickSort(int arr[], int low, int high) {
 void QuickSort::sortImp(int arr[], int n) { quickSort(arr, 0, n - 1); }
 
 void SelectionSort::sortImp(int arr[], int n) {
-  // TODO: YOUR CODE HERE
+  for (int i = 0; i < n - 1; i++) {
+    count_compare++; // count comparison i < n - 1
+
+    // dung 1 bien luu chi so cua phan tu nho nhat
+    int min_pos = i;
+
+    //duyet tung phan tu dung sau phan tu hien tai va cap nhat chi so cua phan tu nho nhat
+    for (int j = i + 1; j < n; j++) {
+      count_compare++; // count comparison j < n
+      count_compare++; // count comparison arr[j] < arr[minIndex]
+      if (arr[j] < arr[min_pos]) {
+        min_pos = j;
+      }
+    }
+    swap(a[i], a[min_pos]);
+  }
 }
 
 void BubbleSort::sortImp(int arr[], int n) {
-  // TODO: YOUR CODE HERE
+  for (int i = 0; i < n - 1; i++) {
+    count_compare++; // count comparison i < n - 1
+
+    for (int j = 0; j < n - i - 1; j++) {
+      count_compare++; // count comparison j < n - i - 1
+      count_compare++; // count comparison arr[j] > arr[j + 1]
+      if (arr[j] > arr[j + 1]) {
+        swap(a[j], a[j + 1]);
+      }
+    }
+  }
 }
 
 void MergeSort::sortImp(int arr[], int n) {
