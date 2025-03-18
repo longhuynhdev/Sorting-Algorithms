@@ -93,11 +93,31 @@ public:
 class RadixSort : public SortingStrategy {
 protected:
   void sortImp(int arr[], int n) override;
-  
+
 public:
   std::string getName() const override;
 };
-  
 
+
+// Flash Sort
+class FlashSort : public SortingStrategy {
+private:
+    void flashInsertionSort(int arr[], int s, int e);
+
+protected:
+  void sortImp(int arr[], int n) override;
+
+public:
+  std::string getName() const override;
+};
+
+// Shell Sort
+class ShellSort : public SortingStrategy {
+protected:
+  void sortImp(int arr[], int n) override;
+
+public:
+  std::string getName() const override;
+};
 
 #endif // SORTING_ALGORITHM_H_
