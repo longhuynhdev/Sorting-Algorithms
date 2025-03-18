@@ -36,3 +36,4 @@ src/output
 .vscode/settings.json
 src/input.txt
 src/main
+src/input/input.txt

@@ -104,7 +104,6 @@ void MergeSort::sortImp(int arr[], int n) {
   // TODO: YOUR CODE HERE
 }
 
-// Heap sort
 void HeapSort::heapify(int arr[], int n, int i) {
   int largest = i;
   int left = 2 * i + 1;
@@ -163,9 +162,6 @@ void ShakerSort::sortImp(int arr[], int n) {
   }
 }
 
-
-
-
 void CountingSort :: sortImp(int arr[], int n){
   int maxElement = arr[0];
   for(int i = 1; ++count_compare && i < n; i++){
@@ -173,8 +169,8 @@ void CountingSort :: sortImp(int arr[], int n){
       maxElement = arr[i];
   }
 
-  int* cnt = new int[maxElement + 1]{0};
-  int* res = new int[n]{0};
+  int* cnt = new int[maxElement + 1]();
+  int* res = new int[n]();
 
   for(int i = 0; ++count_compare && i < n; i++)
     cnt[arr[i]]++;
@@ -204,7 +200,7 @@ void RadixSort :: sortImp(int arr[], int n){
   int* res = new int[n];
 
   for(int exp = 1; ++count_compare && maxElement / exp > 0; exp *= 10){
-      int cnt[10]{0};
+      int cnt[10] = {0};
 
       for(int i = 0; ++count_compare && i < n; i++)
           cnt[(arr[i] / exp) % 10]++;
@@ -225,7 +221,6 @@ void RadixSort :: sortImp(int arr[], int n){
 
 }
 
-//SHELL SORT
 void ShellSort::sortImp(int arr[], int n) {
     for (int interval = n / 2; ++count_compare && interval > 0; interval /= 2) {
         for (int i = interval; ++count_compare && i < n; i++) {
@@ -239,12 +234,11 @@ void ShellSort::sortImp(int arr[], int n) {
     }
 }
 
-//FLASH SORT
 void FlashSort::sortImp(int arr[], int n) {
     int m = 0.005 * n;
     if (m <= 0) m = 1;
 
-    int M[n] = {0};
+    int* M = new int[n]();
 
     int min = arr[0], maxId = 0;
     for (int i = 0; ++count_compare && i < n; i++) {
@@ -278,6 +272,7 @@ void FlashSort::sortImp(int arr[], int n) {
         flashInsertionSort(arr, s, M[i]);
         s = M[i];
     }
+    delete[] M;
 }
 
 void FlashSort::flashInsertionSort(int arr[], int s, int e) {
