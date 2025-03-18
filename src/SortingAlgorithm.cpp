@@ -201,7 +201,7 @@ void CountingSort :: sortImp(int arr[], int n){
 
   int* cnt = new int[maxElement + 1]{0};
   int* res = new int[n]{0};
-  
+
   for(int i = 0; ++count_compare && i < n; i++)
     cnt[arr[i]]++;
 
@@ -210,12 +210,12 @@ void CountingSort :: sortImp(int arr[], int n){
 
   for(int i = n - 1; ++count_compare && i >= 0; i--){
     res[cnt[arr[i]] - 1] = arr[i];
-    cnt[arr[i]]--; 
+    cnt[arr[i]]--;
   }
 
   for(int i = 0; ++count_compare && i < n; i++)
     arr[i] = res[i];
-  
+
   delete[] cnt;
   delete[] res;
 }
@@ -244,194 +244,80 @@ void RadixSort :: sortImp(int arr[], int n){
       }
 
       for(int i = 0; ++count_compare && i < n; i++)
-          arr[i] = res[i];     
-      
+          arr[i] = res[i];
+
   }
   delete[] res;
-   
+
 }
+
 //SHELL SORT
-
-void shellSort_Time(int array[], int n, double& t) {
-	auto start = chrono::high_resolution_clock::now();
-	for (int interval = n / 2; interval > 0; interval /= 2)
-	{
-		for (int i = interval; i < n; i += 1)
-		{
-			int temp = array[i];
-			int j;
-			for (j = i; j >= interval && array[j - interval] > temp; j -= interval)
-			{
-				array[j] = array[j - interval];
-			}
-			array[j] = temp;
-		}
-	}
-	auto end = chrono::high_resolution_clock::now();
-	t = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-}
-
-void shellSort_Compare(int array[], int n, long long& cmp) {
-	for (int interval = n / 2; ++cmp && interval > 0; interval /= 2) {
-		for (int i = interval; ++cmp && i < n; i += 1) {
-			int temp = array[i];
-			int j;
-			for (j = i; ++cmp && j >= interval && ++cmp && array[j - interval] > temp; j -= interval) {
-				array[j] = array[j - interval];
-			}
-			array[j] = temp;
-		}
-	}
-}
-
-void shellSort(int a[], int size, double& t, long long& cmp, int output, string data_file) {
-	if (output == 1) {
-		shellSort_Time(a, size, t);
-	}
-	else if (output == 2) {
-		shellSort_Compare(a, size, cmp);
-	}
-	else if (output == 3) {
-		shellSort_Time(a, size, t);
-		readFile(data_file, a, size);
-		shellSort_Compare(a, size, cmp);
-	}
+void ShellSort::sortImp(int arr[], int n) {
+    for (int interval = n / 2; ++count_compare && interval > 0; interval /= 2) {
+        for (int i = interval; ++count_compare && i < n; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; ++count_compare && j >= interval && arr[j - interval] > temp; j -= interval) {
+                arr[j] = arr[j - interval];
+            }
+            arr[j] = temp;
+        }
+    }
 }
 
 //FLASH SORT
+void FlashSort::sortImp(int arr[], int n) {
+    int m = 0.005 * n;
+    if (m <= 0) m = 1;
 
-void flashInsertionSort_Time(int* a, int s, int e) {
-	for (int i = s; i < e - 1; ++i) {
-		int pos = i;
-		for (int j = i + 1; j < e; ++j) {
-			if ((a[j] < a[pos])) {
-				pos = j;
-			}
-		}
-		swap(a[i], a[pos]);
-	}
+    int M[n] = {0};
+
+    int min = arr[0], maxId = 0;
+    for (int i = 0; ++count_compare && i < n; i++) {
+        if (arr[i] < min) min = arr[i];
+        if (arr[i] > arr[maxId]) maxId = i;
+    }
+
+    if (arr[maxId] == min) return;
+
+    for (int i = 0; ++count_compare && i < n; i++) {
+        int k = (m - 1) * (arr[i] - min) / (arr[maxId] - min);
+        M[k]++;
+    }
+
+    for (int i = 1; ++count_compare && i < m; i++) {
+        M[i] += M[i - 1];
+    }
+
+    int b[n];
+    for (int i = n - 1; ++count_compare && i >= 0; i--) {
+        int k = (m - 1) * (arr[i] - min) / (arr[maxId] - min);
+        b[--M[k]] = arr[i];
+    }
+
+    for (int i = 0; ++count_compare && i < n; i++) {
+        arr[i] = b[i];
+    }
+
+    int s = 0;
+    for (int i = 0; ++count_compare && i < m - 1; i++) {
+        flashInsertionSort(arr, s, M[i]);
+        s = M[i];
+    }
 }
 
-void flashSort_Time(int* a, int size, double& t) {
-	auto start = chrono::high_resolution_clock::now();
-	int m = 0.005 * size;
-	int* M = new int[m];
-	int* _M = new int[m];
-	for (int i = 0; i < m; i++) {
-		M[i] = 0;
-	}
-
-	int min = a[0], maxId = 0;
-	for (int i = 0; i < size; i++) {
-		if (a[i] < min)
-			min = a[i];
-		if (a[i] > a[maxId])
-			maxId = i;
-	}
-
-	for (int i = 0; i < size; i++) {
-		int k = (m - 1) * (a[i] - min) / (a[maxId] - min);
-		M[k]++;
-	}
-	for (int i = 0; i < m - 1; i++) {
-		M[i + 1] = M[i] + M[i + 1];
-		_M[i] = M[i];
-	}
-	_M[m - 1] = M[m - 1];
-
-	int* b = new int[size];
-	for (int i = 0; i < size; i++) {
-		int k = (m - 1) * (a[i] - min) / (a[maxId] - min);
-		b[--M[k]] = a[i];
-	}
-
-	for (int i = 0; i < size; i++)
-		a[i] = b[i];
-	delete[] b;
-
-	int cnt = 0;
-	int s = 0;
-	while (cnt < m - 1) {
-		flashInsertionSort_Time(a, s, _M[cnt]);
-		s = _M[cnt];
-		cnt++;
-	}
-	delete[] M;
-	delete[] _M;
-	auto end = chrono::high_resolution_clock::now();
-	t = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+void FlashSort::flashInsertionSort(int arr[], int s, int e) {
+    for (int i = s; ++count_compare && i < e - 1; ++i) {
+        int pos = i;
+        for (int j = i + 1; ++count_compare && j < e; ++j) {
+            if (arr[j] < arr[pos]) {
+                pos = j;
+            }
+        }
+        std::swap(arr[i], arr[pos]);
+    }
 }
 
-void flashInsertionSort_Compare(int* a, int s, int e, long long& cmp) {
-	for (int i = s; ++cmp && i < e - 1; ++i) {
-		int pos = i;
-		for (int j = i + 1; ++cmp && j < e; ++j) {
-			if (++cmp && (a[j] < a[pos])) {
-				pos = j;
-			}
-		}
-		swap(a[i], a[pos]);
-	}
-}
-
-void flashSort_Compare(int* a, int size, long long& cmp) {
-	int m = 0.005 * size;
-	int* M = new int[m];
-	int* _M = new int[m];
-	for (int i = 0; ++cmp && i < m; i++) {
-		_M[i] = 0;
-		M[i] = 0;
-	}
-
-	int min = a[0], maxId = 0;
-	for (int i = 0; ++cmp && i < size; i++) {
-		if (++cmp && (a[i] < min))
-			min = a[i];
-		if (++cmp && (a[i] > a[maxId]))
-			maxId = i;
-	}
-
-	for (int i = 0; ++cmp && i < size; i++) {
-		int k = (m - 1) * (a[i] - min) / (a[maxId] - min);
-		M[k]++;
-	}
-	for (int i = 0; ++cmp && i < m - 1; i++) {
-		M[i + 1] = M[i] + M[i + 1];
-		_M[i] = M[i];
-	}
-	_M[m - 1] = M[m - 1];
-
-	int* b = new int[size];
-	for (int i = 0; ++cmp && i < size; i++) {
-		int k = (m - 1) * (a[i] - min) / (a[maxId] - min);
-		b[--M[k]] = a[i];
-	}
-
-	for (int i = 0; ++cmp && i < size; i++)
-		a[i] = b[i];
-	delete[] b;
-
-	int cnt = 0;
-	int s = 0;
-	while (++cmp && (cnt < m - 1)) {
-		flashInsertionSort_Compare(a, s, M[cnt], cmp);
-		s = M[cnt];
-		cnt++;
-	}
-	delete[] M;
-}
-
-void flashSort(int a[], int size, double& t, long long& cmp, int output, string data_file) {
-	if (output == 1)
-		flashSort_Time(a, size, t);
-	else if (output == 2)
-		flashSort_Compare(a, size, cmp);
-	else if (output == 3) {
-		flashSort_Time(a, size, t);
-		readFile(data_file, a, size);
-		flashSort_Compare(a, size, cmp);
-	}
-}
 
 std::string SelectionSort::getName() const { return "Selection Sort"; }
 std::string InsertionSort::getName() const { return "Insertion Sort"; }
@@ -445,5 +331,5 @@ std::string HeapSort::getName() const { return "Heap Sort"; }
 std::string ShakerSort::getName() const { return "Shaker Sort"; }
 std::string CountingSort::getName() const { return "Counting Sort";}
 std::string RadixSort::getName() const {return "Radix Sort";}
-std::string flashSort::getName() const { return "Flash Sort";}
-std::string shellSort::getName() const {return "Shell Sort";}
+std::string FlashSort::getName() const { return "Flash Sort";}
+std::string ShellSort::getName() const {return "Shell Sort";}
