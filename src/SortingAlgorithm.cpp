@@ -258,6 +258,20 @@ void shellSort_Compare(int array[], int n, long long& cmp) {
 	}
 }
 
+void shellSort(int a[], int size, double& t, long long& cmp, int output, string data_file) {
+	if (output == 1) {
+		shellSort_Time(a, size, t);
+	}
+	else if (output == 2) {
+		shellSort_Compare(a, size, cmp);
+	}
+	else if (output == 3) {
+		shellSort_Time(a, size, t);
+		readFile(data_file, a, size);
+		shellSort_Compare(a, size, cmp);
+	}
+}
+
 //FLASH SORT
 
 void flashInsertionSort_Time(int* a, int s, int e) {
@@ -393,19 +407,6 @@ void flashSort(int a[], int size, double& t, long long& cmp, int output, string 
 	}
 }
 
-void shellSort(int a[], int size, double& t, long long& cmp, int output, string data_file) {
-	if (output == 1) {
-		shellSort_Time(a, size, t);
-	}
-	else if (output == 2) {
-		shellSort_Compare(a, size, cmp);
-	}
-	else if (output == 3) {
-		shellSort_Time(a, size, t);
-		readFile(data_file, a, size);
-		shellSort_Compare(a, size, cmp);
-	}
-}
 std::string SelectionSort::getName() const { return "Selection Sort"; }
 std::string InsertionSort::getName() const { return "Insertion Sort"; }
 std::string BinaryInsertionSort::getName() const {
