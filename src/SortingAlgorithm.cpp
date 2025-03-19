@@ -337,7 +337,7 @@ void FlashSort::sortImp(int arr[], int n) {
     M[i] += M[i - 1];
   }
 
-  int b[n];
+  int* b = new int[n];
   for (int i = n - 1; ++count_compare && i >= 0; i--) {
     int k = (m - 1) * (arr[i] - min) / (arr[maxId] - min);
     b[--M[k]] = arr[i];
@@ -353,6 +353,7 @@ void FlashSort::sortImp(int arr[], int n) {
     s = M[i];
   }
   delete[] M;
+  delete[] b; 
 }
 
 void FlashSort::flashInsertionSort(int arr[], int s, int e) {

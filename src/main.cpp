@@ -8,6 +8,7 @@
 #include <string>
 
 using namespace std;
+using std::chrono::duration;
 
 void printArray(int array[], int n)
 {
@@ -100,19 +101,19 @@ int *generateArray(int n, string pattern)
 
 // references:
 // https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
-long long runAlgorithm(SortingStrategy *algorithm, int arr[], int n)
+double runAlgorithm(SortingStrategy *algorithm, int arr[], int n)
 {
   auto start = chrono::high_resolution_clock::now();
   algorithm->sort(arr, n);
   auto end = chrono::high_resolution_clock::now();
 
-  long long executionTime =
-      chrono::duration_cast<chrono::milliseconds>(end - start).count();
-  return executionTime;
+  duration<double, std::milli> executionTime = end - start;;
+  return executionTime.count();
 }
 
+
 void compareAlgorithms(SortingStrategy *algo1, SortingStrategy *algo2,
-                       int arr[], int n, long long &time1, long long &time2)
+                       int arr[], int n, double &time1, double &time2)
 {
 
   int *arr1 = new int[n];
@@ -130,7 +131,7 @@ void compareAlgorithms(SortingStrategy *algo1, SortingStrategy *algo2,
   delete[] arr2;
 }
 
-void printOutputParameter(string parameter, long long count_compare, long long runtime)
+void printOutputParameter(string parameter, long long count_compare, double runtime)
 {
   if (parameter == "-time")
   {
@@ -147,8 +148,8 @@ void printOutputParameter(string parameter, long long count_compare, long long r
   }
 }
 
-void printComparisonMode(string algoName1, long long time1, long long comp1,
-                         string algoName2, long long time2, long long comp2,
+void printComparisonMode(string algoName1, double time1, long long comp1,
+                         string algoName2, double time2, long long comp2,
                          string fileName = "", int n = 0,
                          string inputOrder = "")
 {
@@ -232,7 +233,7 @@ string parameter2Order(string parameter)
 // Command 1
 void handleCommand1(string algo, string given_input, string output_parameter = "")
 {
-  string filename_out = "input/output.txt";
+  string filename_out = "output.txt";
   SortingStrategy *sort_method = createSortingAlgorithm(algo);
 
   if (!sort_method)
@@ -249,7 +250,7 @@ void handleCommand1(string algo, string given_input, string output_parameter = "
 
   int n;
   int *arr = readArrayFromFile(given_input, n);
-  long long runtime = runAlgorithm(sort_method, arr, n);
+  double runtime = runAlgorithm(sort_method, arr, n);
 
   printOutputParameter(output_parameter, sort_method->getCountCompare(), runtime);
   writeArraytoFile(filename_out, arr, n);
@@ -261,8 +262,8 @@ void handleCommand1(string algo, string given_input, string output_parameter = "
 void handleCommand2(string algo, int n, string input_order,
                     string output_parameter = "")
 {
-  string filename_in = "input/input.txt";
-  string filename_out = "input/output.txt";
+  string filename_in = "input.txt";
+  string filename_out = "output.txt";
   SortingStrategy *sort_method = createSortingAlgorithm(algo);
   cout << "Algorithm: " << sort_method->getName() << endl;
   cout << "Input size: " << n << endl;
@@ -277,7 +278,7 @@ void handleCommand2(string algo, int n, string input_order,
 
   int *arr = generateArray(n, input_order);
   writeArraytoFile(filename_in, arr, n);
-  long long runtime = runAlgorithm(sort_method, arr, n);
+  double runtime = runAlgorithm(sort_method, arr, n);
   writeArraytoFile(filename_out, arr, n);
   printOutputParameter(output_parameter, sort_method->getCountCompare(),
                        runtime);
@@ -290,7 +291,7 @@ void handleCommand2(string algo, int n, string input_order,
 void handleCommand3(string algo, int n, string output_parameter = "")
 {
   string sort_types[4] = {"Randomize", "Nearly Sorted", "Sorted", "Reversed"};
-  string filename_out = "input/output.txt";
+  string filename_out = "output.txt";
   SortingStrategy *sort_method = createSortingAlgorithm(algo);
   cout << "Algorithm: " << sort_method->getName() << endl;
   cout << "Input size: " << n << endl
@@ -299,10 +300,10 @@ void handleCommand3(string algo, int n, string output_parameter = "")
   int *arr = new int[n];
   for (int i = 0; i < 4; i++)
   {
-    string filename_in = "input/input_" + to_string(i + 1) + ".txt";
+    string filename_in = "input_" + to_string(i + 1) + ".txt";
     GenerateData(arr, n, i);
     writeArraytoFile(filename_in, arr, n);
-    long long runtime = runAlgorithm(sort_method, arr, n);
+    double runtime = runAlgorithm(sort_method, arr, n);
     cout << "Input order: " << sort_types[i] << endl;
     cout << "-------------------------------------" << endl;
     printOutputParameter(output_parameter, sort_method->getCountCompare(),
@@ -340,9 +341,9 @@ void handleCommand4(string algo1, string algo2, string fileName)
   int *arr = readArrayFromFile(fileName, n);
   if (arr != nullptr)
   {
-    long long time1 = 0;
+    double time1 = 0;
     long long comp1 = 0;
-    long long time2 = 0;
+    double time2 = 0;
     long long comp2 = 0;
     compareAlgorithms(sorter1, sorter2, arr, n, time1, time2);
     printComparisonMode(sorter1->getName(), time1, sorter1->getCountCompare(),
@@ -387,8 +388,8 @@ void handleCommand5(string algo1, string algo2, int inputSize,
     return;
   }
 
-  long long time1 = 0;
-  long long time2 = 0;
+  double time1 = 0;
+  double time2 = 0;
   compareAlgorithms(sorter1, sorter2, arr, inputSize, time1, time2);
 
   printComparisonMode(sorter1->getName(), time1, sorter1->getCountCompare(),
@@ -462,7 +463,7 @@ void handleArguments(int argc, char *argv[])
     }
   }
 }
-
+ 
 int main(int argc, char *argv[])
 {
   handleArguments(argc, argv);
