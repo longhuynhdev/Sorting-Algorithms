@@ -1,38 +1,30 @@
 #include "SortingAlgorithm.h"
-#include <utility>
-#include <bits/stdc++.h>
+#include "DataGenerator.h"
 
 void InsertionSort::sortImp(int arr[], int n) {
-  for (int i = 1; i < n; i++) {
-    count_compare++; // Count comparison in for loop (i < n)
+  for (int i = 1; ++count_compare && i < n; i++) {
 
     int key = arr[i];
     int j = i - 1;
 
-    while (j >= 0 && key < arr[j]) {
-      count_compare += 2; // Count comparison j >= 0 and key < arr[j]
+    while (++count_compare && j >= 0 && ++count_compare && key < arr[j]) {
       arr[j + 1] = arr[j];
       --j;
     }
-
-    count_compare += (j >= 0) ? 2 : 1;
 
     arr[j + 1] = key;
   }
 }
 
 int BinaryInsertionSort::binarySearch(int arr[], int low, int high, int item) {
-  while (low <= high) {
-    count_compare++; // Count comparison low <= high
+  while (++count_compare && low <= high) {
     int mid = low + (high - low) / 2;
 
-    count_compare++; // Count comparison item == arr[mid]
-    if (item == arr[mid]) {
+    if (++count_compare && item == arr[mid]) {
       return mid;
     }
 
-    count_compare++; // Count comparison item > arr[mid]
-    if (item > arr[mid]) {
+    if (++count_compare && item > arr[mid]) {
       low = mid + 1;
     } else {
       high = mid - 1;
@@ -42,8 +34,7 @@ int BinaryInsertionSort::binarySearch(int arr[], int low, int high, int item) {
 }
 
 void BinaryInsertionSort::sortImp(int arr[], int n) {
-  for (int i = 1; i < n; i++) {
-    count_compare++; // Count comparison in for loop (i < n)
+  for (int i = 1; ++count_compare && i < n; i++) {
 
     int key = arr[i];
     int j = i - 1;
@@ -51,26 +42,39 @@ void BinaryInsertionSort::sortImp(int arr[], int n) {
     // Find location to insert using binary search
     int location = binarySearch(arr, 0, j, key);
 
-    while (j >= location) {
-      count_compare++; // Count comparison j >= location
+    while (++count_compare && j >= location) {
       arr[j + 1] = arr[j];
       j--;
     }
-    count_compare++; // Count for last comparison when j < location
 
     arr[j + 1] = key;
   }
 }
 
+// Partition function with median-of-three pivot selection
 int QuickSort::partition(int arr[], int low, int high) {
-  int pivot = arr[high];
 
+  int middle = low + (high - low) / 2;
+
+  if (++count_compare && arr[low] > arr[middle]) {
+    HoanVi(arr[low], arr[middle]);
+  }
+
+  if (++count_compare && arr[low] > arr[high]) {
+    HoanVi(arr[low], arr[high]);
+  }
+
+  if (++count_compare && arr[middle] > arr[high]) {
+    HoanVi(arr[middle], arr[high]);
+  }
+
+  HoanVi(arr[middle], arr[high]);
+
+  int pivot = arr[high];
   int i = low - 1;
 
-  for (int j = low; j < high; j++) {
-    count_compare++; // Count comparison in for loop (j < high)
-    count_compare++; // Count comparison arr[j] <= pivot
-    if (arr[j] <= pivot) {
+  for (int j = low; ++count_compare && j < high; j++) {
+    if (++count_compare && arr[j] <= pivot) {
       i++;
       HoanVi(arr[i], arr[j]);
     }
@@ -81,8 +85,7 @@ int QuickSort::partition(int arr[], int low, int high) {
 
 // Recursive QuickSort implementation
 void QuickSort::quickSort(int arr[], int low, int high) {
-  count_compare++; // Count comparison low < high
-  if (low < high) {
+  if (++count_compare && low < high) {
     // pi is partitioning index
     int pi = partition(arr, low, high);
 
@@ -199,7 +202,6 @@ void MergeSort::sortImp(int arr[], int n) {
 }
 
 
-// Heap sort
 void HeapSort::heapify(int arr[], int n, int i) {
   int largest = i;
   int left = 2 * i + 1;
@@ -216,7 +218,7 @@ void HeapSort::heapify(int arr[], int n, int i) {
   }
 
   if (++count_compare && largest != i) {
-    std::swap(arr[i], arr[largest]);
+    HoanVi(arr[i], arr[largest]);
     heapify(arr, n, largest);
   }
 }
@@ -228,7 +230,7 @@ void HeapSort::sortImp(int arr[], int n) {
   }
 
   for (int i = n - 1; ++count_compare && i >= 0; i--) {
-    std::swap(arr[0], arr[i]);
+    HoanVi(arr[0], arr[i]);
     heapify(arr, i, 0);
   }
 }
@@ -242,7 +244,7 @@ void ShakerSort::sortImp(int arr[], int n) {
   while (++count_compare && left < right) {
     for (int i = left; ++count_compare && i < right; i++) {
       if (++count_compare && arr[i] > arr[i + 1]) {
-        std::swap(arr[i], arr[i + 1]);
+        HoanVi(arr[i], arr[i + 1]);
         k = i;
       }
     }
@@ -250,7 +252,7 @@ void ShakerSort::sortImp(int arr[], int n) {
 
     for (int i = right; ++count_compare && i > left; i--) {
       if (++count_compare && arr[i] < arr[i - 1]) {
-        std::swap(arr[i], arr[i - 1]);
+        HoanVi(arr[i], arr[i - 1]);
         k = i;
       }
     }
@@ -258,135 +260,134 @@ void ShakerSort::sortImp(int arr[], int n) {
   }
 }
 
-
-
-
-void CountingSort :: sortImp(int arr[], int n){
+void CountingSort ::sortImp(int arr[], int n) {
   int maxElement = arr[0];
-  for(int i = 1; ++count_compare && i < n; i++){
-    if(arr[i] > maxElement)
+  for (int i = 1; ++count_compare && i < n; i++) {
+    if (++count_compare && arr[i] > maxElement)
       maxElement = arr[i];
   }
 
-  int* cnt = new int[maxElement + 1]{0};
-  int* res = new int[n]{0};
+  int *cnt = new int[maxElement + 1]();
+  int *res = new int[n]();
 
-  for(int i = 0; ++count_compare && i < n; i++)
+  for (int i = 0; ++count_compare && i < n; i++)
     cnt[arr[i]]++;
 
-  for(int i = 1; ++count_compare && i < maxElement + 1; i++)
+  for (int i = 1; ++count_compare && i < maxElement + 1; i++)
     cnt[i] += cnt[i - 1];
 
-  for(int i = n - 1; ++count_compare && i >= 0; i--){
+  for (int i = n - 1; ++count_compare && i >= 0; i--) {
     res[cnt[arr[i]] - 1] = arr[i];
     cnt[arr[i]]--;
   }
 
-  for(int i = 0; ++count_compare && i < n; i++)
+  for (int i = 0; ++count_compare && i < n; i++)
     arr[i] = res[i];
 
   delete[] cnt;
   delete[] res;
 }
 
-void RadixSort :: sortImp(int arr[], int n){
+void RadixSort ::sortImp(int arr[], int n) {
   int maxElement = arr[0];
-  for(int i = 1; ++count_compare && i < n; i++){
-    if(arr[i] > maxElement)
+  for (int i = 1; ++count_compare && i < n; i++) {
+    if (++count_compare && arr[i] > maxElement)
       maxElement = arr[i];
   }
 
-  int* res = new int[n];
+  int *res = new int[n];
 
-  for(int exp = 1; ++count_compare && maxElement / exp > 0; exp *= 10){
-      int cnt[10]{0};
+  for (int exp = 1; ++count_compare && maxElement / exp > 0; exp *= 10) {
+    int cnt[10] = {0};
 
-      for(int i = 0; ++count_compare && i < n; i++)
-          cnt[(arr[i] / exp) % 10]++;
+    for (int i = 0; ++count_compare && i < n; i++)
+      cnt[(arr[i] / exp) % 10]++;
 
-      for(int i = 1; ++count_compare && i < 10; i++)
-          cnt[i] += cnt[i - 1];
+    for (int i = 1; ++count_compare && i < 10; i++)
+      cnt[i] += cnt[i - 1];
 
-      for(int i = n - 1; ++count_compare && i >= 0; i--){
-          res[cnt[(arr[i] / exp) % 10] - 1] = arr[i];
-          cnt[(arr[i] / exp) % 10]--;
-      }
+    for (int i = n - 1; ++count_compare && i >= 0; i--) {
+      res[cnt[(arr[i] / exp) % 10] - 1] = arr[i];
+      cnt[(arr[i] / exp) % 10]--;
+    }
 
-      for(int i = 0; ++count_compare && i < n; i++)
-          arr[i] = res[i];
-
+    for (int i = 0; ++count_compare && i < n; i++)
+      arr[i] = res[i];
   }
   delete[] res;
-
 }
 
-//SHELL SORT
 void ShellSort::sortImp(int arr[], int n) {
-    for (int interval = n / 2; ++count_compare && interval > 0; interval /= 2) {
-        for (int i = interval; ++count_compare && i < n; i++) {
-            int temp = arr[i];
-            int j;
-            for (j = i; ++count_compare && j >= interval && arr[j - interval] > temp; j -= interval) {
-                arr[j] = arr[j - interval];
-            }
-            arr[j] = temp;
-        }
+  for (int interval = n / 2; ++count_compare && interval > 0; interval /= 2) {
+    for (int i = interval; ++count_compare && i < n; i++) {
+      int temp = arr[i];
+      int j;
+      for (j = i; (++count_compare && j >= interval) &&
+                  (++count_compare && arr[j - interval] > temp);
+           j -= interval) {
+        arr[j] = arr[j - interval];
+      }
+      arr[j] = temp;
     }
+  }
 }
 
-//FLASH SORT
 void FlashSort::sortImp(int arr[], int n) {
-    int m = 0.005 * n;
-    if (m <= 0) m = 1;
+  int m = 0.005 * n;
+  if (m <= 0)
+    m = 1;
 
-    int M[n] = {0};
+  int *M = new int[n]();
 
-    int min = arr[0], maxId = 0;
-    for (int i = 0; ++count_compare && i < n; i++) {
-        if (arr[i] < min) min = arr[i];
-        if (arr[i] > arr[maxId]) maxId = i;
-    }
+  int min = arr[0], maxId = 0;
+  for (int i = 0; ++count_compare && i < n; i++) {
+    if (++count_compare && arr[i] < min)
+      min = arr[i];
+    if (++count_compare && arr[i] > arr[maxId])
+      maxId = i;
+  }
 
-    if (arr[maxId] == min) return;
+  if (++count_compare && arr[maxId] == min)
+    return;
 
-    for (int i = 0; ++count_compare && i < n; i++) {
-        int k = (m - 1) * (arr[i] - min) / (arr[maxId] - min);
-        M[k]++;
-    }
+  for (int i = 0; ++count_compare && i < n; i++) {
+    int k = (m - 1) * (arr[i] - min) / (arr[maxId] - min);
+    M[k]++;
+  }
 
-    for (int i = 1; ++count_compare && i < m; i++) {
-        M[i] += M[i - 1];
-    }
+  for (int i = 1; ++count_compare && i < m; i++) {
+    M[i] += M[i - 1];
+  }
 
-    int b[n];
-    for (int i = n - 1; ++count_compare && i >= 0; i--) {
-        int k = (m - 1) * (arr[i] - min) / (arr[maxId] - min);
-        b[--M[k]] = arr[i];
-    }
+  int b[n];
+  for (int i = n - 1; ++count_compare && i >= 0; i--) {
+    int k = (m - 1) * (arr[i] - min) / (arr[maxId] - min);
+    b[--M[k]] = arr[i];
+  }
 
-    for (int i = 0; ++count_compare && i < n; i++) {
-        arr[i] = b[i];
-    }
+  for (int i = 0; ++count_compare && i < n; i++) {
+    arr[i] = b[i];
+  }
 
-    int s = 0;
-    for (int i = 0; ++count_compare && i < m - 1; i++) {
-        flashInsertionSort(arr, s, M[i]);
-        s = M[i];
-    }
+  int s = 0;
+  for (int i = 0; ++count_compare && i < m - 1; i++) {
+    flashInsertionSort(arr, s, M[i]);
+    s = M[i];
+  }
+  delete[] M;
 }
 
 void FlashSort::flashInsertionSort(int arr[], int s, int e) {
-    for (int i = s; ++count_compare && i < e - 1; ++i) {
-        int pos = i;
-        for (int j = i + 1; ++count_compare && j < e; ++j) {
-            if (arr[j] < arr[pos]) {
-                pos = j;
-            }
-        }
-        std::swap(arr[i], arr[pos]);
+  for (int i = s; ++count_compare && i < e - 1; ++i) {
+    int pos = i;
+    for (int j = i + 1; ++count_compare && j < e; ++j) {
+      if (++count_compare && arr[j] < arr[pos]) {
+        pos = j;
+      }
     }
+    HoanVi(arr[i], arr[pos]);
+  }
 }
-
 
 std::string SelectionSort::getName() const { return "Selection Sort"; }
 std::string InsertionSort::getName() const { return "Insertion Sort"; }
@@ -398,7 +399,7 @@ std::string BubbleSort::getName() const { return "Bubble Sort"; }
 std::string MergeSort::getName() const { return "Merge Sort"; }
 std::string HeapSort::getName() const { return "Heap Sort"; }
 std::string ShakerSort::getName() const { return "Shaker Sort"; }
-std::string CountingSort::getName() const { return "Counting Sort";}
-std::string RadixSort::getName() const {return "Radix Sort";}
-std::string FlashSort::getName() const { return "Flash Sort";}
-std::string ShellSort::getName() const {return "Shell Sort";}
+std::string CountingSort::getName() const { return "Counting Sort"; }
+std::string RadixSort::getName() const { return "Radix Sort"; }
+std::string FlashSort::getName() const { return "Flash Sort"; }
+std::string ShellSort::getName() const { return "Shell Sort"; }
