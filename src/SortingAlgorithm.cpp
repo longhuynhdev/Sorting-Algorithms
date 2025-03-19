@@ -96,17 +96,111 @@ void QuickSort::quickSort(int arr[], int low, int high) {
 
 void QuickSort::sortImp(int arr[], int n) { quickSort(arr, 0, n - 1); }
 
+// SELECTION SORT
+
 void SelectionSort::sortImp(int arr[], int n) {
-  // TODO: YOUR CODE HERE
+  for (int i = 0; i < n - 1; i++) {
+    count_compare++; // count comparison i < n - 1
+
+    // dung 1 bien luu chi so cua phan tu nho nhat
+    int min_pos = i;
+
+    //duyet tung phan tu dung sau phan tu hien tai va cap nhat chi so cua phan tu nho nhat
+    for (int j = i + 1; j < n; j++) {
+      count_compare++; // count comparison j < n
+      count_compare++; // count comparison arr[j] < arr[minIndex]
+      if (arr[j] < arr[min_pos]) {
+        min_pos = j;
+      }
+    }
+    swap(a[i], a[min_pos]);
+  }
 }
 
+// BUBBLE SORT
+
 void BubbleSort::sortImp(int arr[], int n) {
-  // TODO: YOUR CODE HERE
+  for (int i = 0; i < n - 1; i++) {
+    count_compare++; // count comparison i < n - 1
+
+    for (int j = 0; j < n - i - 1; j++) {
+      count_compare++; // count comparison j < n - i - 1
+      count_compare++; // count comparison arr[j] > arr[j + 1]
+      if (arr[j] > arr[j + 1]) {
+        swap(a[j], a[j + 1]);
+      }
+    }
+  }
+}
+
+// MERGE SORT
+
+void MergeSort::merge(int arr[], int left, int mid, int right) {
+  int n1 = mid - left + 1;
+  int n2 = right - mid;
+
+  int* L = new int[n1];
+  int* R = new int[n2];
+
+  for (int i = 0; i < n1; i++) {
+    count_compare++; // so sánh trong vòng lặp i < n1
+    L[i] = arr[left + i];
+  }
+
+  for (int j = 0; j < n2; j++) {
+    count_compare++; // so sánh trong vòng lặp j < n2
+    R[j] = arr[mid + 1 + j];
+  }
+
+  int i = 0, j = 0, k = left;
+
+  while (i < n1 && j < n2) {
+    count_compare += 2; // so sánh i < n1 và j < n2
+    count_compare++; // so sánh L[i] <= R[j]
+    if (L[i] <= R[j]) {
+      arr[k] = L[i];
+      i++;
+    } else {
+      arr[k] = R[j];
+      j++;
+    }
+    k++;
+  }
+
+  while (i < n1) {
+    count_compare++; // so sánh i < n1
+    arr[k] = L[i];
+    i++;
+    k++;
+  }
+
+  while (j < n2) {
+    count_compare++; // so sánh j < n2
+    arr[k] = R[j];
+    j++;
+    k++;
+  }
+
+  delete[] L;
+  delete[] R;
+}
+
+void MergeSort::mergeSort(int arr[], int left, int right) {
+  count_compare++; // so sánh left < right
+  if (left < right) {
+    int mid = (left + right) / 2;
+
+    mergeSort(arr, left, mid);
+    mergeSort(arr, mid + 1, right);
+
+    merge(arr, left, mid, right);
+  }
 }
 
 void MergeSort::sortImp(int arr[], int n) {
-  // TODO: YOUR CODE HERE
+  mergeSort(arr, 0, n - 1);
 }
+
 
 void HeapSort::heapify(int arr[], int n, int i) {
   int largest = i;
