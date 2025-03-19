@@ -51,9 +51,26 @@ void BinaryInsertionSort::sortImp(int arr[], int n) {
   }
 }
 
+// Partition function with median-of-three pivot selection
 int QuickSort::partition(int arr[], int low, int high) {
-  int pivot = arr[high];
 
+  int middle = low + (high - low) / 2;
+
+  if (++count_compare && arr[low] > arr[middle]) {
+    HoanVi(arr[low], arr[middle]);
+  }
+
+  if (++count_compare && arr[low] > arr[high]) {
+    HoanVi(arr[low], arr[high]);
+  }
+
+  if (++count_compare && arr[middle] > arr[high]) {
+    HoanVi(arr[middle], arr[high]);
+  }
+
+  HoanVi(arr[middle], arr[high]);
+
+  int pivot = arr[high];
   int i = low - 1;
 
   for (int j = low; ++count_compare && j < high; j++) {
