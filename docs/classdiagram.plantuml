@@ -1,5 +1,17 @@
 @startuml ClassDiagram
 
+class CommandHandler {
+
+}
+
+class ArrayManager {
+
+}
+
+class OutputFormater {
+    
+}
+
 class SortingStrategy {
     #long long count_compare
     +{abstract} ~SortingStrategy()
@@ -14,6 +26,12 @@ class InsertionSort {
     +{method} getName()
 }
 
+class BinaryInserionSort {
+    -int binarySearch(int arr[], int low, int high, int item)
+    #{method} sortImp(int arr[], int n)
+    +{method} getName()
+}
+
 class QuickSort{
     -int partition(int arr[], int low, int high);
     -void quickSort(int arr[], int low, int high);
@@ -21,8 +39,7 @@ class QuickSort{
     +{method} getName()
 }
 
-class BinaryInserionSort {
-    -int binarySearch(int arr[], int low, int high, int item)
+class SelectionSort {
     #{method} sortImp(int arr[], int n)
     +{method} getName()
 }
@@ -30,13 +47,6 @@ class BinaryInserionSort {
 class BubbleSort{
     #{method} sortImp(int arr[], int n)
     +{method} getName()
-
-}
-
-class SelectionSort {
-    #{method} sortImp(int arr[], int n)
-    +{method} getName()
-
 }
 
 class MergeSort {
@@ -46,6 +56,17 @@ class MergeSort {
     +{method} getName()
 }
 
+class HeapSort {
+    - void heapify(int arr[], int n, int i)
+    #{method} void sortImp(int arr[], int n)
+    +{method} string getName()
+}
+
+class ShakerSort {
+    #{method} void sortImp(int arr[], int n)
+    +{method} string getName()
+}
+
 ' Relations beetween classes
 SortingStrategy <|-- InsertionSort
 SortingStrategy <|-- QuickSort
@@ -53,7 +74,7 @@ SortingStrategy <|-- BinaryInserionSort
 SortingStrategy <|-- BubbleSort
 SortingStrategy <|-- SelectionSort
 SortingStrategy <|-- MergeSort
-
-
+SortingStrategy <|-- HeapSort
+SortingStrategy <|-- ShakerSort
 
 @enduml

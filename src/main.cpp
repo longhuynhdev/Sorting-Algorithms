@@ -278,6 +278,7 @@ void handleCommand2(string algo, int n, string input_order,
   int *arr = generateArray(n, input_order);
   writeArraytoFile(filename_in, arr, n);
   long long runtime = runAlgorithm(sort_method, arr, n);
+  writeArraytoFile(filename_out, arr, n);
   printOutputParameter(output_parameter, sort_method->getCountCompare(),
                        runtime);
 
@@ -467,3 +468,5 @@ int main(int argc, char *argv[])
   handleArguments(argc, argv);
   return 0;
 }
+
+
