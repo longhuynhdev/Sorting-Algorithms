@@ -1,15 +1,17 @@
 @startuml ClassDiagram
 
-class CommandHandler {
-
-}
-
-class ArrayManager {
-
+class FileHandler {
+    +{static} int *readArrayFromFile(string fileName, int &n)
+    +{static} void writeArraytoFile(string fileName, const int arr[], int n)
 }
 
 class OutputFormater {
-    
+    +{static} void printArray(int array[], int n)
+    +{static} void printOutputParameter(string parameter, long long count_compare, double runtime)
+    +{static} void printComparisonMode(string algoName1, double time1, long long comp1,
+    string algoName2, double time2, long long comp2,
+    string fileName = "", int n = 0, string inputOrder = "")
+    +{static} string parameter2Order(string parameter)
 }
 
 class SortingStrategy {
@@ -67,6 +69,44 @@ class ShakerSort {
     +{method} string getName()
 }
 
+class CountingSort {
+    #{method} void sortImp(int arr[], int n)
+    +{method} string getName()
+}
+
+class RadixSort {
+    #{method} void sortImp(int arr[], int n)
+    +{method} string getName()
+}
+
+class FlashSort {
+    -void flashInsertionSort(int arr[], int s, int e)
+    #{method} void sortImp(int arr[], int n)
+    +{method} string getName()
+}
+
+class ShellSort {
+    #{method} void sortImp(int arr[], int n)
+    +{method} string getName()
+}
+
+entity main {
+    +int *generateArray(int n, string pattern)
+    +double runAlgorithm(SortingStrategy *algorithm, int arr[], int n)
+    +void compareAlgorithms(SortingStrategy *algo1, SortingStrategy *algo2,
+    int arr[], int n, double &time1, double &time2)
+    +SortingStrategy *createSortingAlgorithm(const string &name)
+    +void handleCommand1(string algo, string given_input,
+    string output_parameter = "")
+    +void handleCommand2(string algo, int n, string input_order,
+    string output_parameter = "")
+    +void handleCommand3(string algo, int n, string output_parameter = "")
+    +void handleCommand4(string algo1, string algo2, string fileName)
+    +void handleCommand5(string algo1, string algo2, int inputSize,
+    string inputOrder)
+    +void handleArguments(int argc, char *argv[])
+}
+
 ' Relations beetween classes
 SortingStrategy <|-- InsertionSort
 SortingStrategy <|-- QuickSort
@@ -76,5 +116,12 @@ SortingStrategy <|-- SelectionSort
 SortingStrategy <|-- MergeSort
 SortingStrategy <|-- HeapSort
 SortingStrategy <|-- ShakerSort
+SortingStrategy <|-- CountingSort
+SortingStrategy <|-- RadixSort
+SortingStrategy <|-- FlashSort
+SortingStrategy <|-- ShellSort
 
+main <-- SortingStrategy
+main <-- FileHandler
+main <-- OutputFormater
 @enduml
