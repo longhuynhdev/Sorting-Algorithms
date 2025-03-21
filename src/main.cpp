@@ -463,9 +463,18 @@ void handleArguments(int argc, char *argv[])
     }
   }
 }
- 
+
+void testAlgo() {
+  int n[] = {10000, 30000, 50000, 100000, 300000, 500000};
+  for(int i = 0; i < 6; i++) {
+    handleCommand2("flash-sort", n[i], "-rand","-both");
+    cout << endl;
+  }
+}
+
 int main(int argc, char *argv[])
 {
+  //testAlgo();
   handleArguments(argc, argv);
   return 0;
 }
