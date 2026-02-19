@@ -1,8 +1,6 @@
 #ifndef SORTING_STRATEGY_H_
 #define SORTING_STRATEGY_H_
 
-#include "DataGenerator.h"
-#include <iostream>
 #include <string>
 
 class SortingStrategy

@@ -1,15 +1,5 @@
 ﻿#include "DataGenerator.h"
 
-template <class T>
-void HoanVi(T &a, T &b)
-{
-	T x = a;
-	a = b;
-	b = x;
-}
-
-//-------------------------------------------------
-
 // Hàm phát sinh mảng dữ liệu ngẫu nhiên
 void GenerateRandomData(int a[], int n)
 {

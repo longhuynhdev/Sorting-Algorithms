@@ -1,17 +1,17 @@
 @startuml ClassDiagram
 
 class FileHandler {
-    +{static} int *readArrayFromFile(string fileName, int &n)
-    +{static} void writeArraytoFile(string fileName, const int arr[], int n)
+    +{static} int *readArrayFromFile(const string &fileName, int &n)
+    +{static} void writeArraytoFile(const string &fileName, const int arr[], int n)
 }
 
-class OutputFormater {
+class OutputFormatter {
     +{static} void printArray(int array[], int n)
-    +{static} void printOutputParameter(string parameter, long long count_compare, double runtime)
-    +{static} void printComparisonMode(string algoName1, double time1, long long comp1,
-    string algoName2, double time2, long long comp2,
-    string fileName = "", int n = 0, string inputOrder = "")
-    +{static} string parameter2Order(string parameter)
+    +{static} void printOutputParameter(const string &parameter, long long count_compare, double runtime)
+    +{static} void printComparisonMode(const string &algoName1, double time1, long long comp1,
+    const string &algoName2, double time2, long long comp2,
+    const string &fileName = "", int n = 0, const string &inputOrder = "")
+    +{static} string parameter2Order(const string &parameter)
 }
 
 class SortingStrategy {
@@ -23,12 +23,20 @@ class SortingStrategy {
     +long long getCountCompare()
 }
 
+class SortingAlgorithmRegistry {
+    -{static} SortingAlgorithmRegistry instance
+    -map<string, FactoryFunction> registry_
+    +{static} SortingAlgorithmRegistry &instance()
+    +void registerAlgorithm(const string &name, FactoryFunction factory)
+    +SortingStrategy *create(const string &name) const
+}
+
 class InsertionSort {
     #{method} sortImp(int arr[], int n)
     +{method} getName()
 }
 
-class BinaryInserionSort {
+class BinaryInsertionSort {
     -int binarySearch(int arr[], int low, int high, int item)
     #{method} sortImp(int arr[], int n)
     +{method} getName()
@@ -91,26 +99,25 @@ class ShellSort {
 }
 
 entity main {
-    +int *generateArray(int n, string pattern)
+    +int *generateArray(int n, const string &pattern)
     +double runAlgorithm(SortingStrategy *algorithm, int arr[], int n)
     +void compareAlgorithms(SortingStrategy *algo1, SortingStrategy *algo2,
     int arr[], int n, double &time1, double &time2)
-    +SortingStrategy *createSortingAlgorithm(const string &name)
-    +void handleCommand1(string algo, string given_input,
-    string output_parameter = "")
-    +void handleCommand2(string algo, int n, string input_order,
-    string output_parameter = "")
-    +void handleCommand3(string algo, int n, string output_parameter = "")
-    +void handleCommand4(string algo1, string algo2, string fileName)
-    +void handleCommand5(string algo1, string algo2, int inputSize,
-    string inputOrder)
+    +void handleCommand1(const string &algo, const string &given_input,
+    const string &output_parameter = "")
+    +void handleCommand2(const string &algo, int n, const string &input_order,
+    const string &output_parameter = "")
+    +void handleCommand3(const string &algo, int n, const string &output_parameter = "")
+    +void handleCommand4(const string &algo1, const string &algo2, const string &fileName)
+    +void handleCommand5(const string &algo1, const string &algo2, int inputSize,
+    const string &inputOrder)
     +void handleArguments(int argc, char *argv[])
 }
 
-' Relations beetween classes
+' Relations between classes
 SortingStrategy <|-- InsertionSort
 SortingStrategy <|-- QuickSort
-SortingStrategy <|-- BinaryInserionSort
+SortingStrategy <|-- BinaryInsertionSort
 SortingStrategy <|-- BubbleSort
 SortingStrategy <|-- SelectionSort
 SortingStrategy <|-- MergeSort
@@ -121,7 +128,8 @@ SortingStrategy <|-- RadixSort
 SortingStrategy <|-- FlashSort
 SortingStrategy <|-- ShellSort
 
-main <-- SortingStrategy
-main <-- FileHandler
-main <-- OutputFormater
+SortingAlgorithmRegistry --> SortingStrategy : creates
+main --> SortingAlgorithmRegistry
+main --> FileHandler
+main --> OutputFormatter
 @enduml

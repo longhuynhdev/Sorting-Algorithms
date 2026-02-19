@@ -40,3 +40,5 @@ src/input/input.txt
 src/input/input.txt
 src/input/output.txt
 src/output.txt
+build/
+sorting
