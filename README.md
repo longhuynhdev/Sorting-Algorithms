@@ -220,6 +220,5 @@ src/
 
 ## Fun Facts
 
-- **Score: 9.42/10** -- The instructor's feedback ran almost a full page
-  of detailed comments (see [docs/comment.png](/docs/comment.png)).
+- **Score: 9.42/10** (see [docs/comment.png](/docs/comment.png)).
 
